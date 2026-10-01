@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Segurança do Trabalho – CBPMESP | Estudo Interativo</title>
+<style>
+:root{
+  --bg:#0b1220; --panel:#111a2b; --panel2:#17233a; --text:#eef4ff; --muted:#9fb0c9;
+  --accent:#ffb703; --accent2:#fb8500; --green:#35d07f; --red:#ff6b6b; --blue:#56b4ff;
+  --border:rgba(255,255,255,.09); --shadow:0 15px 40px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:
+  radial-gradient(circle at 15% 0%,rgba(255,183,3,.13),transparent 28%),
+  radial-gradient(circle at 100% 20%,rgba(86,180,255,.10),transparent 30%),var(--bg);
+  color:var(--text);line-height:1.6;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+header{
+  position:sticky;top:0;z-index:50;background:rgba(11,18,32,.86);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)
+}
+.nav{max-width:1200px;margin:auto;padding:14px 22px;display:flex;align-items:center;gap:18px}
+.logo{font-weight:800;letter-spacing:.3px}.logo span{color:var(--accent)}
+.navlinks{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.navlinks button,.ghost{
+  background:transparent;color:var(--muted);border:1px solid transparent;padding:8px 12px;border-radius:10px
+}
+.navlinks button:hover,.ghost:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.hero{max-width:1200px;margin:auto;padding:58px 22px 28px}
+.badge{display:inline-flex;gap:7px;align-items:center;background:rgba(255,183,3,.12);border:1px solid rgba(255,183,3,.25);color:#ffd166;padding:7px 11px;border-radius:999px;font-size:.86rem}
+h1{font-size:clamp(2rem,5vw,4rem);line-height:1.04;margin:18px 0 14px;max-width:850px}
+.hero p{color:var(--muted);max-width:800px;font-size:1.05rem}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.primary,.secondary{
+  border:0;border-radius:12px;padding:11px 16px;font-weight:700
+}
+.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#16100a}
+.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border)}
+.container{max-width:1200px;margin:auto;padding:10px 22px 60px}
+.dashboard{display:grid;grid-template-columns:1.4fr .6fr;gap:18px;margin:20px 0}
+.card{background:rgba(17,26,43,.88);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);padding:20px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat strong{font-size:1.65rem;display:block}.stat span{color:var(--muted);font-size:.85rem}
+.progress{height:9px;background:#25334c;border-radius:99px;overflow:hidden;margin:12px 0}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--green));transition:.4s}
+.search{width:100%;background:#0d1728;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+.section{margin-top:24px}
+.section-title{display:flex;align-items:center;gap:12px;margin:0 0 12px}
+.section-title .num{background:var(--accent);color:#19120a;border-radius:10px;padding:4px 9px;font-weight:900}
+.module{
+  background:rgba(17,26,43,.8);border:1px solid var(--border);border-radius:16px;margin:10px 0;overflow:hidden
+}
+.module summary{list-style:none;padding:18px 20px;cursor:pointer;font-weight:800;display:flex;justify-content:space-between;gap:15px}
+.module summary::-webkit-details-marker{display:none}
+.module summary:after{content:"＋";color:var(--accent);font-size:1.2rem}
+.module[open] summary:after{content:"−"}
+.module .body{padding:0 20px 20px;border-top:1px solid var(--border)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:15px}
+.info{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:13px;padding:15px}
+.info h4{margin:0 0 7px;color:#ffd166}
+ul{margin-top:8px}
+li{margin:5px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0}
+th,td{padding:11px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{color:#ffd166;background:rgba(255,183,3,.06)}
+.callout{border-left:4px solid var(--accent);background:rgba(255,183,3,.07);padding:13px 15px;border-radius:8px;margin:14px 0}
+.memory{display:flex;gap:10px;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(86,180,255,.12),rgba(53,208,127,.08));border:1px solid rgba(86,180,255,.2)}
+.memory button{background:var(--blue);border:0;color:#07111d;padding:8px 12px;border-radius:9px;font-weight:800}
+.quiz-card{margin-top:18px}
+.question{font-size:1.05rem;font-weight:700;margin-bottom:12px}
+.options{display:grid;gap:8px}
+.option{
+  width:100%;text-align:left;background:#0d1728;border:1px solid var(--border);color:var(--text);
+  padding:11px 13px;border-radius:10px;transition:.2s
+}
+.option:hover{border-color:rgba(255,183,3,.55);transform:translateX(2px)}
+.option.correct{border-color:var(--green);background:rgba(53,208,127,.12)}
+.option.wrong{border-color:var(--red);background:rgba(255,107,107,.12)}
+.feedback{margin-top:10px;color:var(--muted)}
+footer{max-width:1200px;margin:auto;padding:25px 22px 50px;color:var(--muted);text-align:center}
+@media(max-width:850px){
+  .dashboard{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}
+  .navlinks{display:none}
+}
+@media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.hero{padding-top:38px}}
+.hidden{display:none!important}
+mark{background:rgba(255,183,3,.28);color:inherit;border-radius:3px;padding:0 2px}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">CBPMESP <span>•</span> Segurança do Trabalho</div>
+    <div class="navlinks">
+      <button onclick="go('conteudo')">Conteúdo</button>
+      <button onclick="go('resumo')">Resumo</button>
+      <button onclick="go('quiz')">Quiz</button>
+      <button onclick="topo()">Topo ↑</button>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" id="topo">
+  <span class="badge">🚒 Material de revisão • Aulas 1 a 20</span>
+  <h1>Segurança do Trabalho<br>para a prova</h1>
+  <p>Uma página de estudo organizada para leitura, revisão rápida, memorização e prática. O conteúdo abaixo segue o material fornecido.</p>
+  <div class="toolbar">
+    <button class="primary" onclick="go('conteudo')">Começar estudo ↓</button>
+    <button class="secondary" onclick="go('quiz')">Ir direto ao Quiz</button>
+  </div>
+</section>
+
+<main class="container">
+  <section class="dashboard">
+    <div class="card">
+      <strong>🔎 Busca rápida</strong>
+      <p style="color:var(--muted);margin:5px 0 10px">Digite uma palavra como “EPI”, “NOB-13”, “inspeção” ou “riscos”.</p>
+      <input class="search" id="search" placeholder="Pesquisar no material..." oninput="filtrar()">
+    </div>
+    <div class="card">
+      <strong>📈 Progresso</strong>
+      <div class="progress"><i id="bar"></i></div>
+      <span id="progressText" style="color:var(--muted)">0 módulos concluídos</span>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="card stat"><strong>9</strong><span>Blocos principais</span></div>
+    <div class="card stat"><strong>5</strong><span>Grupos de riscos</span></div>
+    <div class="card stat"><strong>7</strong><span>Etapas da inspeção</span></div>
+    <div class="card stat"><strong>3</strong><span>Etapas da investigação</span></div>
+  </section>
+
+  <section id="conteudo" class="section">
+    <div class="section-title"><span class="num">1</span><h2>Conteúdo completo e interativo</h2></div>
+
+    <details class="module" data-module>
+      <summary>📜 Legislação — Aulas 1 e 2</summary>
+      <div class="body">
+        <div class="callout"><b>Constituição Federal — Arts. 6º e 7º:</b> direitos dos trabalhadores relacionados à redução dos riscos, adicionais, seguro contra acidentes e proteção de menores.</div>
+        <ul>
+          <li>Redução dos riscos do trabalho por normas de saúde, higiene e segurança.</li>
+          <li>Adicional para atividades penosas, insalubres ou perigosas.</li>
+          <li>Seguro contra acidentes de trabalho, a cargo do empregador.</li>
+          <li>Proibição de trabalho noturno, perigoso ou insalubre para menores de 18 anos.</li>
+        </ul>
+        <div class="grid">
+          <div class="info"><h4>Decreto Estadual 20.218/82</h4><p>Define acidente em serviço para a PMESP: atividades policiais-militares, ordens, viagens de serviço e deslocamento residência–trabalho. O resumo aponta exceções relacionadas a crime, transgressão, imprudência ou desídia.</p></div>
+          <div class="info"><h4>Decreto Estadual 7.484/35</h4><p>Cria o Atestado de Origem e o Inquérito Sanitário de Origem.</p></div>
+        </div>
+        <p><b>NRs destacadas:</b> NR-01, NR-06, NR-15, NR-16, NR-23 e NR-35.</p>
+      </div>
+    </details>
+
+    <details class="module" data-module>
+      <summary>🧠 Conceitos básicos — Aulas 3 e 4</summary>
+      <div class="body">
+        <table>
+          <thead><tr><th>Conceito</th><th>Definição do material</th></tr></thead>
+          <tbody>
+            <tr><td>Segurança do Trabalho</td><td>Ciência que estuda as causas dos acidentes para preveni-los.</td></tr>
+            <tr><td>Saúde do Trabalho</td><td>Ciência que estuda as causas das doenças ocupacionais para preveni-las.</td></tr>
+            <tr><td>Acidente do Trabalho (legal)</td><td>Ocorrência anormal e involuntária durante o trabalho, com ou sem afastamento, causando ou não danos ao patrimônio.</td></tr>
+            <tr><td>Acidente (prevencionista)</td><td>Ocorrência inesperada que interrompe o processo normal e causa risco de lesão ou dano.</td></tr>
+            <tr><td>Doença Ocupacional</td><td>Moléstia contraída no exercício da atividade, causando incapacidade temporária ou definitiva; é equiparada a acidente.</td></tr>
+            <tr><td>Lesão Imediata</td><td>Corte, fratura, choque — acidente típico.</td></tr>
+            <tr><td>Lesão Mediata</td><td>Surdez, LER/DORT, lesão pulmonar — doença profissional.</td></tr>
+          </tbody>
+        </table>
+        <div class="grid">
+          <div class="info"><h4>Fatores humanos</h4><p>Inadaptação, desconhecimento dos riscos e personalidade.</p></div>
+          <div class="info"><h4>Fatores momentâneos</h4><p>Problemas familiares, alcoolismo, fadiga, doença e preocupações.</p></div>
+          <div class="info"><h4>Personalidade</h4><p>O tudo, o desleixado, o exibicionista, o desatento e o brincalhão.</p></div>
+          <div class="info"><h4>Termos-chave</h4><p><b>Perigo:</b> exposição relativa ao risco. <b>Risco:</b> possibilidade de evento causador de dano. <b>Quase acidente:</b> quase acontecimento de um acidente.</p></div>
+        </div>
+        <div class="callout"><b>Condições inseguras</b> = características do ambiente. <b>Atos inseguros</b> = atitudes pessoais que expõem ao risco. <b>Fator pessoal de insegurança</b> = condição particular que leva ao ato inseguro.</div>
+      </div>
+    </details>
+
+    <details class="module" data-module>
+      <summary>🚒 NOB-13/04 — Segurança no Serviço de Bombeiro</summary>
+      <div class="body">
+        <p><b>Objetivo:</b> estabelecer critérios de segurança nas atividades operacionais do CBPMESP.</p>
+        <div class="grid">
+          <div class="info"><h4>Definições</h4><ul><li>Segurança do Trabalho: medidas para evitar riscos/acidentes.</li><li>Acidente do Trabalho: ocorrência anormal e involuntária durante o serviço.</li><li>Quase-acidente: incidente sem lesão.</li><li>EPC: isolamento da fonte de risco.</li><li>EPI: reduz resultados lesivos, mas não evita o acidente.</li></ul></div>
+          <div class="info"><h4>Bombeiro-Segurança</h4><p>Designado pelo <b>Comandante da Emergência</b> para supervisionar a segurança.</p></div>
+        </div>
+        <h3>Responsabilidades</h3>
+        <ul>
+          <li><b>Todos os integrantes:</b> observar normas, estudar/treinar e planejar ações.</li>
+          <li><b>Comandante do CB:</b> definir doutrina e política de segurança.</li>
+          <li><b>Departamentos (ESB, CSM/MopB):</b> assessorar, planejar e estabelecer metas.</li>
+          <li><b>Cmt de PB:</b> verificar diariamente prontidões, veículos e equipamentos.</li>
+          <li><b>CIPA/PM:</b> analisar, discutir e divulgar eventos; banco de dados; canal técnico com SESMT/CB.</li>
+        </ul>
+        <h3>Segurança no serviço operacional</h3>
+        <p><b>Preparação → Atendimento → No local → Pós-atendimento</b></p>
+        <p>Na preparação: verificar veículos/equipamentos e preparação física/técnica. No atendimento: deslocamento seguro, estacionamento e sinalização. No local: Cmt coordena, define Bombeiro-Segurança e áreas quentes/mornas/frias. No pós: discussão, deslocamento seguro e higienização.</p>
+        <div class="callout"><b>CIPA/PM:</b> reuniões ordinárias bimestrais; relatório anual em maio. O resumo também destaca identificação de equipamentos inadequados e estudos de ergonomia.</div>
+      </div>
+    </details>
+
+    <details class="module" data-module>
+      <summary>⚠️ Riscos ambientais — Aulas 7 a 10</summary>
+      <div class="body">
+        <h3>Os 5 grupos de riscos ocupacionais</h3>
+        <table>
+          <thead><tr><th>Grupo</th><th>Agentes / exemplos</th></tr></thead>
+          <tbody>
+            <tr><td>Físicos</td><td>Ruído, calor, frio, vibração, radiação, umidade e pressão.</td></tr>
+            <tr><td>Químicos</td><td>Gases, poeiras, vapores e fumos.</td></tr>
+            <tr><td>Biológicos</td><td>Bactérias, fungos, vírus, animais peçonhentos, vermes e ácaros.</td></tr>
+            <tr><td>Ergonômicos</td><td>Posturas inadequadas, trabalho pesado, turnos, monotonia e estresse.</td></tr>
+            <tr><td>Mecânicos/Acidentes</td><td>Máquinas/ferramentas defeituosas, eletricidade, arranjo físico, incêndio/explosão.</td></tr>
+          </tbody>
+        </table>
+        <h3>Riscos na atividade operacional</h3>
+        <div class="grid">
+          <div class="info"><h4>🔥 Combate ao fogo</h4><p>Riscos: dificuldade respiratória, queda de objetos, desmoronamentos, queimaduras, fraturas, cortes, explosões, choques, fadiga e temperaturas extremas.</p><p><b>Medidas:</b> EPI completo, corte de energia, atenção a ligações clandestinas e comunicação constante.</p></div>
+          <div class="info"><h4>🧗 Salvamento em altura</h4><p>Riscos: quedas, rompimento de cabos, soltura de nós e choque elétrico.</p><p><b>Medidas:</b> EPI, técnica, equipamentos adequados, pontos de ancoragem firmes (mínimo 2), cabo guia, técnica dos 6 olhos e nunca ultrapassar 50% da carga.</p></div>
+          <div class="info"><h4>🌳 Corte de árvore</h4><p>Riscos: ruído, quedas, galhos, rede elétrica, cortes e esmagamentos.</p><p><b>Medidas:</b> EPI, ancoragem, comunicação visual e desligamento da rede elétrica.</p></div>
+          <div class="info"><h4>🏋️ Levantamento manual</h4><ul><li>Coluna ereta e uso das pernas.</li><li>Carga próxima ao corpo.</li><li>Evitar rotação do tronco.</li><li>Carga a 40 cm do piso; se abaixo, usar duas etapas.</li></ul></div>
+        </div>
+      </div>
+    </details>
+
+    <details class="module" data-module>
+      <summary>🔍 Inspeção de segurança — Aulas 11 e 12</summary>
+      <div class="body">
+        <p><b>Objetivo:</b> verificar situações inseguras e identificar atos inseguros — prevenção ativa.</p>
+        <table>
+          <thead><tr><th>Tipo</th><th>Característica</th></tr></thead>
+          <tbody>
+            <tr><td>Gerais</td><td>Todas as dependências, viaturas e equipamentos; intervalos irregulares.</td></tr>
+            <tr><td>Rotina</td><td>Viaturas e equipamentos; diariamente, no início e encerramento.</td></tr>
+            <tr><td>Parciais</td><td>Objeto específico; motivada por fator técnico ou comunicação.</td></tr>
+            <tr><td>Periódicas</td><td>Regular e programada; desgaste/validade.</td></tr>
+            <tr><td>Técnicas</td><td>Levantamento de riscos ambientais por profissional capacitado.</td></tr>
+          </tbody>
+        </table>
+        <h3>7 etapas — memorize esta sequência</h3>
+        <div class="callout"><b>Observação → Registro → Análise da Situação → Relatório → Proposta → Implantação → Acompanhamento</b></div>
+        <button class="secondary" onclick="marcarModulo(this)">✓ Marcar como estudado</button>
+      </div>
+    </details>
+
+    <details class="module" data-module>
+      <summary>🪖 EPI, EPC e EPR — Aulas 13 e 14</summary>
+      <div class="body">
+        <div class="grid">
+          <div class="info"><h4>EPI</h4><p>Dispositivo usado por uma pessoa contra riscos. Proteções: auditiva, respiratória, visual/facial, cabeça, mãos/braços, pernas/pés e contra quedas.</p></div>
+          <div class="info"><h4>EPC</h4><p>Dispositivo de âmbito coletivo: placas, sensores, cavaletes, fitas, lava-olhos, ventilação/exaustão, proteção contra ruídos/vibrações e iluminação de emergência.</p></div>
+        </div>
+        <h3>EPR — Equipamento de Proteção Respiratória</h3>
+        <ul><li><b>Independentes:</b> autônomo de ar respirável, mangueira com ar aspirado e adução de ar.</li><li><b>Dependentes:</b> máscara facial com filtro e máscara semifacial com filtro.</li></ul>
+        <h3>Ordem de vestimenta EPI/EPR</h3>
+        <ol>
+          <li>Calça de combate a incêndio — sobre as botas</li>
+          <li>Capuz balaclava</li>
+          <li>Capa de combate a incêndio</li>
+          <li>EPR — cilindro, suporte, peça facial</li>
+          <li>Capacete</li>
+          <li>Luvas</li>
+        </ol>
+        <div class="callout"><b>Respiração:</b> inspiração = esforço muscular, diafragma desce e costelas sobem. Expiração = relaxamento, diafragma sobe e costelas descem. Gases expirados no resumo: N₂ 78%, O₂ 16%, CO₂ 4%, outros 2%.</div>
+      </div>
+    </details>
+
+    <details class="module" data-module>
+      <summary>📢 Medidas de controle e sinalização — Aulas 15 e 16</summary>
+      <div class="body">
+        <h3>Ordem de prioridade</h3>
+        <div class="info memory"><div><b>1. Eliminação</b> → <b>2. Neutralização</b> (EPC → EPI) → <b>3. Sinalização</b></div><button onclick="copiarOrdem()">Copiar</button></div>
+        <ul>
+          <li><b>Eliminação do risco:</b> isentar definitivamente o ambiente da situação insegura.</li>
+          <li><b>Neutralização — EPC:</b> isola a fonte de risco e evita o acidente.</li>
+          <li><b>Neutralização — EPI:</b> isola o trabalhador e reduz os resultados lesivos, mas não evita o acidente.</li>
+          <li><b>Sinalização:</b> medida provisória; placas, faixas e cones. Não substitui as demais.</li>
+        </ul>
+        <div class="callout">💡 <b>Macete:</b> primeiro elimine, depois neutralize; se ainda não for possível, sinalize.</div>
+      </div>
+    </details>
+
+    <details class="module" data-module>
+      <summary>🧾 Investigação e análise de acidentes — Aulas 19 e 20</summary>
+      <div class="body">
+        <p><b>Objetivo:</b> pesquisar causas para suprimi-las — prevenção passiva.</p>
+        <div class="grid">
+          <div class="info"><h4>1. Coleta de informações</h4><p>Levantar circunstâncias, ambiente e ações humanas; entrevistar testemunhas e vítima; não emitir juízo de valor.</p></div>
+          <div class="info"><h4>2. Análise do acidente</h4><p>Estudar cada dado, relacionar atos inseguros, fatores pessoais e condições inseguras; ordenar do resultado final aos antecedentes.</p></div>
+          <div class="info"><h4>3. Proposta de medidas corretivas</h4><p>Controlar todos os fatores e priorizar riscos iminentes/graves.</p></div>
+        </div>
+      </div>
+    </details>
+
+    <details class="module" data-module>
+      <summary>📚 Estudos de caso — Aulas 17 e 18</summary>
+      <div class="body">
+        <div class="grid">
+          <div class="info"><h4>Caso 1 — Sra. Margarida</h4><p><b>Condição:</b> piso escorregadio? <b>Ato:</b> não trocar sapatos, atraso. <b>Fator pessoal:</b> preocupação com filho doente. <b>Medidas:</b> eliminar piso escorregadio, exigir EPI e orientar.</p></div>
+          <div class="info"><h4>Caso 2 — Sr. Roberto</h4><p><b>Condição:</b> falta de aeração/acúmulo de gases. <b>Ato:</b> trabalhar sem EPR. <b>Medidas:</b> fornecer EPR, melhorar ventilação e treinar.</p></div>
+          <div class="info"><h4>Caso 3 — Caminhoneiro</h4><p><b>Condições:</b> freios defeituosos, sobrecarga e declive. <b>Ato:</b> rota alternativa perigosa. <b>Medidas:</b> manutenção, limite de carga e planejamento de rota.</p></div>
+          <div class="info"><h4>Caso 4 — Sr. Yuri</h4><p><b>Ato:</b> transportar sozinho sem aguardar colega. <b>Fator:</b> atraso/pressa. <b>Medidas:</b> auxílio, reorganização da demanda e treinamento.</p></div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section id="resumo" class="section">
+    <div class="section-title"><span class="num">2</span><h2>🎯 Revisão de véspera</h2></div>
+    <div class="card">
+      <ol>
+        <li><b>Prioridade:</b> Eliminação → Neutralização (EPC → EPI) → Sinalização.</li>
+        <li><b>EPC x EPI:</b> EPC evita o acidente; EPI reduz lesões.</li>
+        <li><b>Doença ocupacional:</b> equiparada a acidente de trabalho.</li>
+        <li><b>NOB-13:</b> Bombeiro-Segurança = designado pelo Comandante da Emergência.</li>
+        <li><b>Inspeção:</b> 7 etapas.</li>
+        <li><b>Investigação:</b> 3 etapas.</li>
+        <li><b>Riscos:</b> 5 grupos.</li>
+        <li><b>CIPA/PM:</b> reuniões bimestrais; relatório anual em maio.</li>
+        <li><b>Vestimenta:</b> calça → balaclava → capa → EPR → capacete → luvas.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="quiz" class="section">
+    <div class="section-title"><span class="num">3</span><h2>🧠 Quiz de fixação</h2></div>
+    <div class="card">
+      <p style="color:var(--muted)">Responda às questões. O resultado é calculado automaticamente.</p>
+      <div id="quizArea"></div>
+      <div class="toolbar">
+        <button class="primary" onclick="reiniciarQuiz()">Reiniciar quiz</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Material-base: “Resumo de Segurança do Trabalho – CBPMESP”, aulas 1 a 20. 🚒📖
+</footer>
+
+<script>
+const quiz = [
+ {q:"Qual é a ordem de prioridade das medidas de controle apresentada no material?",o:["Sinalização → EPI → EPC → Eliminação","Eliminação → Neutralização (EPC → EPI) → Sinalização","EPI → EPC → Sinalização → Eliminação","EPC → Eliminação → EPI → Sinalização"],a:1},
+ {q:"Segundo o resumo, qual equipamento isola a fonte de risco e evita o acidente?",o:["EPI","EPR","EPC","Sinalização"],a:2},
+ {q:"Quem designa o Bombeiro-Segurança?",o:["Cmt de PB","Comandante da Emergência","Presidente da CIPA/PM","Diretor de Apoio Logístico"],a:1},
+ {q:"Quantas etapas compõem a inspeção de segurança?",o:["3","5","6","7"],a:3},
+ {q:"Qual alternativa apresenta somente grupos de riscos ocupacionais?",o:["Físico, químico, biológico, ergonômico e mecânico","Físico, térmico, elétrico, visual e sonoro","Químico, jurídico, operacional, mecânico e social","Biológico, financeiro, físico, ergonômico e administrativo"],a:0},
+ {q:"Qual é a primeira etapa da investigação de acidentes?",o:["Análise do acidente","Proposta de medidas corretivas","Coleta de informações","Implantação"],a:2},
+ {q:"Qual é a sequência correta da vestimenta do EPI/EPR?",o:["Capacete → luvas → EPR → capa → balaclava → calça","Calça → balaclava → capa → EPR → capacete → luvas","Calça → capa → luvas → EPR → capacete → balaclava","Balaclava → calça → EPR → capa → luvas → capacete"],a:1},
+ {q:"Qual risco está associado a ruído, calor, frio, vibração e radiação?",o:["Químico","Biológico","Físico","Ergonômico"],a:2},
+ {q:"Na investigação, deve-se emitir juízo de valor durante a coleta de informações?",o:["Sim","Não"],a:1},
+ {q:"As reuniões ordinárias da CIPA/PM indicadas no resumo são:",o:["Mensais","Bimestrais","Semestrais","Anuais"],a:1}
+];
+let answers = Array(quiz.length).fill(null);
+
+function renderQuiz(){
+ const area=document.getElementById('quizArea');
+ area.innerHTML=quiz.map((x,i)=>`
+  <div class="quiz-card">
+    <div class="question">${i+1}. ${x.q}</div>
+    <div class="options">${x.o.map((op,j)=>`<button class="option" onclick="responder(${i},${j})" id="q${i}_${j}">${String.fromCharCode(65+j)}) ${op}</button>`).join('')}</div>
+    <div class="feedback" id="f${i}"></div>
+  </div>`).join('');
+}
+function responder(i,j){
+ answers[i]=j;
+ quiz[i].o.forEach((_,k)=>{
+   const b=document.getElementById(`q${i}_${k}`);
+   b.classList.remove('correct','wrong');
+   if(k===quiz[i].a)b.classList.add('correct');
+   if(k===j && j!==quiz[i].a)b.classList.add('wrong');
+ });
+ document.getElementById(`f${i}`).textContent = j===quiz[i].a ? "✓ Correto!" : "✗ Incorreto. A alternativa correta está destacada.";
+ const done=answers.filter(x=>x!==null).length;
+ const score=answers.reduce((s,x,k)=>s+(x===quiz[k].a?1:0),0);
+ document.getElementById('progressText').textContent=`Quiz: ${done}/${quiz.length} respondidas • ${score} acertos`;
+}
+function reiniciarQuiz(){answers=Array(quiz.length).fill(null);renderQuiz();window.scrollTo({top:document.getElementById('quiz').offsetTop-80,behavior:'smooth'});}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+function topo(){window.scrollTo({top:0,behavior:'smooth'});}
+function marcarModulo(btn){
+ const d=btn.closest('details'); d.dataset.done=d.dataset.done==='1'?'0':'1'; atualizarProgresso();
+ btn.textContent=d.dataset.done==='1'?'✓ Estudado — clique para desfazer':'✓ Marcar como estudado';
+}
+function atualizarProgresso(){
+ const mods=[...document.querySelectorAll('[data-module]')];
+ const done=mods.filter(x=>x.dataset.done==='1').length;
+ document.getElementById('bar').style.width=(done/mods.length*100)+'%';
+ document.getElementById('progressText').textContent=`${done} de ${mods.length} módulos marcados como estudados`;
+}
+function filtrar(){
+ const term=document.getElementById('search').value.toLowerCase().trim();
+ document.querySelectorAll('[data-module]').forEach(d=>{
+   const match=d.innerText.toLowerCase().includes(term);
+   d.classList.toggle('hidden',!!term && !match);
+   if(term && match)d.open=true;
+ });
+}
+function copiarOrdem(){
+ navigator.clipboard?.writeText('Eliminação → Neutralização (EPC → EPI) → Sinalização');
+}
+renderQuiz();
+atualizarProgresso();
+</script>
+</body>
+</html>
